@@ -106,7 +106,7 @@ class _AuthFormState extends State<AuthForm> {
                     ElevatedButton(
                       onPressed: _trySubmit,
                       style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.blue,
+                        primary: Colors.blue,
                         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
                       ),
                       child: Text(_isLogin ? 'Login' : 'Register'),

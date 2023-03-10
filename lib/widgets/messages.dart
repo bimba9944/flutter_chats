@@ -7,10 +7,9 @@ class Messages extends StatelessWidget {
   Messages({Key? key}) : super(key: key);
   final user = FirebaseAuth.instance.currentUser;
 
-
   @override
   Widget build(BuildContext context) {
-    return StreamBuilder(
+    return StreamBuilder<QuerySnapshot>(
       stream: FirebaseFirestore.instance.collection('chat').orderBy('createdAt', descending: true).snapshots(),
       builder: (ctx, chatSnapshot) {
         if (chatSnapshot.connectionState == ConnectionState.waiting) {
@@ -23,10 +22,13 @@ class Messages extends StatelessWidget {
           reverse: true,
           itemCount: chatDocs?.length,
           itemBuilder: (ctx, index) => MessageBubble(
-            message: chatDocs![index]['text'],
-            isMe: chatDocs[index]['userid'] == user?.uid,
-            username: chatDocs[index]['username'],
-            userImage: chatDocs[index]['userimage'],
+            chatImage: chatDocs?[index]['chatImage'],
+            message: chatDocs?[index]['message'],
+            isMe: chatDocs![index]['userid'] == user?.uid,
+            username: chatDocs![index]['username'],
+            userImage: chatDocs![index]['userimage'],
+            dateOfMessage: chatDocs![index]['createdAt'],
+
           ),
         );
       },

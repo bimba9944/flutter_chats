@@ -30,6 +30,7 @@ class _ChatScreenState extends State<ChatScreen> {
         actions: [
           DropdownButton(
             icon: const Icon(Icons.more_vert),
+            underline: Container(),
             items: [
               DropdownMenuItem(
                 value: 'logout',
@@ -59,7 +60,7 @@ class _ChatScreenState extends State<ChatScreen> {
             Expanded(
               child: Messages(),
             ),
-            NewMessage()
+            const NewMessage()
           ],
         ),
       ),

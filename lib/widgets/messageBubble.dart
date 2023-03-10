@@ -1,19 +1,25 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-
+import 'package:flutter_chats/screens/avatarImageScreen.dart';
+import 'package:intl/intl.dart';
 
 class MessageBubble extends StatelessWidget {
-  const MessageBubble({
-    super.key,
-    required this.message,
-    required this.isMe,
-    required this.username,
-    required this.userImage,
-  });
+  const MessageBubble(
+      {super.key,
+      required this.message,
+      required this.isMe,
+      required this.username,
+      required this.userImage,
+      required this.chatImage,
+      required this.dateOfMessage});
 
-  final String message;
+  final String? message;
   final bool isMe;
   final String username;
   final String userImage;
+  final String? chatImage;
+  final Timestamp dateOfMessage;
+
 
   @override
   Widget build(BuildContext context) {
@@ -45,10 +51,21 @@ class MessageBubble extends StatelessWidget {
                         color: isMe ? Colors.black : Theme.of(context).accentTextTheme.headline1?.color),
                   ),
                   Text(
-                    message,
+                    message ?? '',
                     style: TextStyle(color: isMe ? Colors.black : Theme.of(context).accentTextTheme.headline1?.color),
                     textAlign: isMe ? TextAlign.end : TextAlign.start,
                   ),
+                  InkWell(
+
+                    onTap: () =>
+                        Navigator.push(context, MaterialPageRoute(builder: (context) => AvatarImageScreen(chatImage!))),
+                    child: Container(child: chatImage != null ? Image.network(chatImage!) : null),
+                  ),
+                  Text(
+                    DateFormat('MM-dd-yy HH:mm').format(dateOfMessage.toDate()),
+                    style: TextStyle(fontSize: 10),
+                    textAlign: isMe ? TextAlign.end : TextAlign.start,
+                  )
                 ],
               ),
             ),
@@ -56,9 +73,14 @@ class MessageBubble extends StatelessWidget {
         ),
         Positioned(
           top: -10,
-          left: isMe ? null :120,
-          right: isMe ? 120: null,
-          child: CircleAvatar(backgroundImage: NetworkImage(userImage),),
+          left: isMe ? null : 120,
+          right: isMe ? 120 : null,
+          child: InkWell(
+            onTap: () => Navigator.push(context, MaterialPageRoute(builder: (context) => AvatarImageScreen(userImage))),
+            child: CircleAvatar(
+              backgroundImage: NetworkImage(userImage),
+            ),
+          ),
         ),
       ],
     );
